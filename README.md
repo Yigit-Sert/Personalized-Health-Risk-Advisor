@@ -35,9 +35,13 @@ This is a local Gradio application for training health prediction models, genera
     - Unzip the downloaded file. You might find the CSV inside a `2022` folder.
     - Place the `heart_2022_no_nans.csv` file directly inside the `data/` directory.
 
-5.  **Configure API Keys:**
+5.  **Configure API Keys & Local Models:**
     - Rename the `.env.example` file to `.env`.
-    - Open the `.env` file and replace the placeholder values with your actual API keys for Hugging Face, Google, Together AI, and Groq.
+    - Open the `.env` file and replace the placeholder values with your actual API keys for Google, Together AI, and Groq.
+    - **For Local Models (Ollama):**
+        - Ensure you have [Ollama](https://ollama.ai/) installed and running.
+        - Pull the models you wish to use, for example: `ollama pull qwen:0.5b`.
+        - Open `src/config.py` and update the `OLLAMA_MODELS` dictionary to match the models you have downloaded. The key is the display name for the UI, and the value is the exact model tag used by Ollama.
 
 ## Running the Application
 
@@ -53,6 +57,12 @@ The application will start, and you can access it at the local URL provided in y
 
 - **Local Model Storage**: Trained machine learning models are automatically saved to the `saved_models/` directory. On subsequent runs with the same data configuration, these models are loaded from disk, saving training time.
 
+- **Multi-Provider LLM Integration**: Seamlessly switch between different LLM providers for health advice generation and evaluation, including:
+    - Google Gemini
+    - Together AI
+    - Groq Cloud
+    - **Local models via Ollama**, allowing for offline, private, and free inference using your own hardware.
+
 - **Structured Code**: The project is separated into modules for UI (`app.py`), logic (`callbacks.py`), utilities (`utils.py`), and configuration (`config.py`).
 
-- **Secure API Keys**: API keys are managed via a `.env` file and are not hardcoded. 
+- **Secure API Keys**: Cloud-based API keys are managed via a `.env` file and are not hardcoded. Local models run without needing any external keys. 
