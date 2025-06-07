@@ -68,10 +68,10 @@ body { font-family: 'Arial', sans-serif; }
 .gr-button.gr-button-primary:hover { background: linear-gradient(135deg, #0056b3, #004085) !important; }
 .gr-markdown h1, .gr-markdown h2, .gr-markdown h3 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 20px;}
 .gr-markdown h1 { font-size: 1.8em; } .gr-markdown h2 { font-size: 1.5em; } .gr-markdown h3 { font-size: 1.3em; }
-.status_box { padding: 12px 15px; border-radius: 6px; font-weight: 500; border-left-width: 5px; border-left-style: solid; }
-.status_success { background-color: #1f2937 !important; border-left-color: #2ecc71 !important; color: #1abc9c !important; }
-.status_warning { background-color: #fff8e1 !important; border-left-color: #f39c12 !important; color: #d35400 !important; }
-.status_error { background-color: #ffebee !important; border-left-color: #e74c3c !important; color: #c0392b !important; }
+.status_box { padding: 12px 15px; border-radius: 6px; font-weight: 500; border-left-width: 5px; border-left-style: solid; margin-top: 8px; margin-bottom: 8px; }
+.status_success { background-color: #e7f5ff !important; border-left-color: #2980b9 !important; color: #1d6093 !important; }
+.status_warning { background-color: #fff9e6 !important; border-left-color: #f39c12 !important; color: #b5651d !important; }
+.status_error { background-color: #ffeef0 !important; border-left-color: #e74c3c !important; color: #a93226 !important; }
 .gr-accordion > .gr-block > .label { font-size: 1.15em !important; font-weight: bold !important; color: #2980b9 !important; }
 #app_title { text-align: center; color: #3498db; font-size: 2.2em; margin-bottom: 20px; text-shadow: 1px 1px 2px #ecf0f1;}
 .prediction_input_field { margin-bottom: 5px !important; } /* Generic textboxes */
@@ -80,8 +80,9 @@ body { font-family: 'Arial', sans-serif; }
 .progress-container .progress { background-color: #2980b9 !important; }
 .progress-level div.fill { background-color: #2980b9 !important; background: #2980b9 !important; }
 .progress-level .percent-text { color: white !important; font-weight: bold !important; }
-.info-box { background-color: #374151; border: 1px solid #374151; border-radius: 6px; padding: 12px; margin-top: 8px; margin-bottom: 8px; }
-.info-box-header { font-weight: bold; color: #0056b3; margin-bottom: 5px; font-size: 1.05em; }
-#training_log_md_id .gr-markdown { font-family: 'Courier New', Courier, monospace; font-size: 0.9em; white-space: pre-wrap; background-color: #f0f0f0; padding:10px; border-radius:5px; max-height: 300px; overflow-y: auto; color: #333;}
+.info-box { background-color: #f8f9fa !important; border: 1px solid #f8f9fa !important; border-radius: 6px; padding: 12px; margin-top: 8px; margin-bottom: 8px; }
+.info-box-header { font-weight: bold; color: #2980b9; margin-bottom: 5px; font-size: 1.05em; }
+.info-box .gradio-dataframe table, .info-box .gradio-dataframe table tr, .info-box .gradio-dataframe table tr:nth-child(even) { background-color: #f8f9fa !important; }
+#training_log_md_id .gr-markdown { font-family: 'Courier New', Courier, monospace; font-size: 0.9em; white-space: pre-wrap; background-color: #f8f9fa !important; border: 1px solid #f8f9fa !important; border-radius: 6px; padding: 12px; max-height: 300px; overflow-y: auto; color: #333;}
 #training_log_md_id h3 { color: #2980b9 !important; border-bottom: 1px solid #ddd !important; margin-top: 10px !important; font-size: 1.1em !important;}
 """ 
