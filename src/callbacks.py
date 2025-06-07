@@ -632,35 +632,53 @@ def update_profile_textbox_from_preset(preset_text):
     return gr.update(value=preset_text)
 
 def generate_advice_for_models_tab(profile, selected_llms, progress=gr.Progress(track_tqdm=True)):
-    global generated_advice_text, rules, current_target_disease
-    if not rules:
-        return (gr.Markdown("⚠️ Extract decision rules first.", elem_classes="status_box status_warning"), gr.update(selected="rules_tab"), "", "", "")
-    
-    prompt = (f"You are a helpful AI assistant... Patient Profile: {profile}... Rules: {rules[:1500]}... Provide advice...")
-    
-    all_advices = []
-    for llm_name in progress.tqdm(selected_llms, desc="Generating Advice"):
-        provider, model_id = MODEL_CHOICES_MAP[llm_name]
-        advice = get_response(provider, model_id, prompt)
-        all_advices.append(f"## Advice from: {llm_name}\n\n{advice}\n\n---\n")
-    
-    generated_advice_text = "\n".join(all_advices)
-    return (generated_advice_text, gr.update(selected="advise_eval_tab"), generated_advice_text, "", generated_advice_text)
+    global generated_advice_text, advice_evaluation_text, rules, current_target_disease, MODEL_CHOICES_MAP
+    if not profile or not selected_llms:
+        return gr.update(value="Please provide a patient profile and select at least one LLM."), gr.update(selected="advise_eval_tab"), "", "", ""
 
+    advice_evaluation_text = ""
+    advice_outputs = []
+    
+    # Construct a more detailed prompt
+    rules_context = f"For context, here are some decision rules related to predicting '{current_target_disease}':\n{rules[:1500]}..." if rules else "No decision rules are currently available for context."
+    prompt = f"Based on the following patient profile and decision-rule context, provide clear, empathetic, and actionable health advice. Do NOT give a diagnosis. Emphasize consulting a doctor.\n\n**Patient Profile:**\n{profile}\n\n**Contextual Rules:**\n{rules_context}"
+
+    for model_name in progress.tqdm(selected_llms, desc="Generating Advice from LLMs"):
+        advice_outputs.append(f"### 🤖 Advice from {model_name}\n---\n")
+        
+        provider, model_id = MODEL_CHOICES_MAP.get(model_name, (None, None))
+        if not provider:
+            response = f"Error: Could not find '{model_name}' in the configuration."
+        else:
+            response = get_response(provider, model_id, prompt)
+
+        advice_outputs.append(response + "\n\n")
+
+    full_advice = "".join(advice_outputs)
+    generated_advice_text = full_advice
+    content_for_saving = generated_advice_text
+    
+    return gr.update(value=full_advice), gr.update(selected="advise_eval_tab"), generated_advice_text, "", content_for_saving
 
 def evaluate_current_advice_with_llm(advice_to_eval, llm_for_eval):
-    global advice_evaluation_text
+    global generated_advice_text, advice_evaluation_text, MODEL_CHOICES_MAP
     if not advice_to_eval:
-        return "⚠️ No advice to evaluate.", "", ""
-    
-    prompt = f"Critically evaluate the following health advice...:\n\n---\n{advice_to_eval}\n---"
-    provider, model_id = MODEL_CHOICES_MAP[llm_for_eval]
-    evaluation = get_response(provider, model_id, prompt)
-    
-    advice_evaluation_text = f"\n\n## Evaluation by {llm_for_eval}\n\n{evaluation}"
-    combined_text = advice_to_eval + advice_evaluation_text
-    return (advice_evaluation_text, advice_evaluation_text, combined_text)
+        return "There is no advice to evaluate. Please generate advice first.", "", "No content to save."
+    if not llm_for_eval:
+        return "Please select an LLM to perform the evaluation.", "", "No content to save."
 
+    prompt = f"Please critically evaluate the following health advice for clarity, safety, and actionability. Provide a summary of its strengths and weaknesses. The advice is:\n\n---\n\n{advice_to_eval}"
+    
+    provider, model_id = MODEL_CHOICES_MAP.get(llm_for_eval, (None, None))
+    if not provider:
+        evaluation_response = f"Error: Could not find evaluator model '{llm_for_eval}' in configuration."
+    else:
+        evaluation_response = get_response(provider, model_id, prompt)
+    
+    advice_evaluation_text = f"### ⚖️ Evaluation from {llm_for_eval}\n---\n{evaluation_response}"
+    content_for_saving = generated_advice_text + "\n\n" + advice_evaluation_text
+    
+    return advice_evaluation_text, evaluation_response, content_for_saving
 
 def save_advice_and_evaluation_tab(formats, content):
     filepath, message = save_report_files(formats, content)

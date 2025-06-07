@@ -111,6 +111,11 @@ def create_gradio_app():
 
             with gr.Tab("7. LLM Advice & Evaluation", id="advise_eval_tab"):
                 gr.Markdown("### Step 7: Generate & Evaluate Health Advice using LLMs"); current_advice_target_md = gr.Markdown()
+                gr.Markdown(
+                    "💡 **Note:** Models labeled `(Local)` run on your device using Ollama and will consume CPU/RAM resources. "
+                    "Other models use cloud-based API services.",
+                    elem_classes="info-box"
+                )
                 with gr.Row():
                     with gr.Column(scale=2):
                         profile_in_tb = gr.Textbox(label="Enter Patient Profile for Advice", lines=5, placeholder="Example: 50-year-old male, smoker, BMI 30..."); profile_dd_advice = gr.Dropdown(choices=PRESET_PROFILES, label="Or, Use a Preset Profile")

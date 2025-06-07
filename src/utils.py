@@ -15,10 +15,13 @@ from together import Together
 import google.generativeai as genai
 from xhtml2pdf import pisa
 import re
+import together
+from groq import Groq
+import ollama
 
 # Import configurations
 from .config import (
-    HUGGINGFACE_API_KEY, GOOGLE_API_KEY, TOGETHER_API_KEY, GROQ_API_KEY
+    HUGGINGFACE_API_KEY, GOOGLE_API_KEY, TOGETHER_API_KEY, GROQ_API_KEY, MODEL_CHOICES_MAP
 )
 
 # Configure GenAI
@@ -51,8 +54,9 @@ def get_response(provider, model_id, prompt):
             return res.choices[0].message.content if res and res.choices else "No response from Together AI."
         except Exception as e: return f"Together AI error: {str(e)}"
     elif provider == "Groq Cloud":
+        messages = [{"role": "user", "content": prompt}]
         url = "https://api.groq.com/openai/v1/chat/completions"; headers = {"Content-Type": "application/json", "Authorization": f"Bearer {GROQ_API_KEY}"}
-        payload = {"model": model_id, "messages": [{"role": "user", "content": prompt}], "temperature": 0.7, "max_tokens": 1024}
+        payload = {"model": model_id, "messages": messages, "temperature": 0.7, "max_tokens": 1024}
         try:
             r = requests.post(url, headers=headers, data=json.dumps(payload), timeout=60); r.raise_for_status()
             return r.json()["choices"][0]["message"]["content"]
@@ -60,8 +64,19 @@ def get_response(provider, model_id, prompt):
             try: error_detail = r.json().get('error', {}).get('message', r.text); return f"Groq Cloud HTTP error: {r.status_code} - {error_detail}"
             except json.JSONDecodeError: return f"Groq Cloud HTTP error: {r.status_code} - {r.text}"
         except Exception as e: return f"Groq Cloud error: {str(e)}"
+    elif provider == "Ollama":
+        messages = [{"role": "user", "content": prompt}]
+        try:
+            response = ollama.chat(model=model_id, messages=messages, stream=False)
+            if 'message' in response and 'content' in response['message']:
+                return response['message']['content']
+            else:
+                return f"ERROR: Invalid response format from Ollama for model '{model_id}'."
+        except ollama.ResponseError as e:
+            return f"ERROR: Ollama response error for model '{model_id}'. Is it installed? Details: {e.error}"
+        except Exception as e:
+            return f"ERROR: Could not connect to the Ollama server. Is it running? Details: {str(e)}"
     return "Unknown provider or API key not set."
-
 
 # === DATA ANALYSIS & PLOTTING HELPERS ===
 def parse_df_info(df_instance):

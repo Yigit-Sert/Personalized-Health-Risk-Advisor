@@ -17,6 +17,50 @@ os.environ["TOGETHER_API_KEY"] = TOGETHER_API_KEY or ""
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY or ""
 
 
+# === LLM Model Configurations ===
+# Define model choices from different providers
+# The key is the display name in the UI.
+# The value is a tuple: (Provider/Library Name, model_identifier)
+
+GOOGLE_GEMINI_MODELS = {
+    "Gemini-Pro (Google)": ("Google Gemini", "gemini-pro"),
+    "Gemini-1.5-Flash (Google)": ("Google Gemini", "gemini-1.5-flash-latest"),
+}
+
+TOGETHER_AI_MODELS = {
+    "Mixtral-8x7B (Together AI)": ("Together AI", "mistralai/Mixtral-8x7B-Instruct-v0.1"),
+}
+
+GROQ_CLOUD_MODELS = {
+    "Llama3-8B (Groq)": ("Groq Cloud", "llama3-8b-8192"),
+    "Gemma2-9B (Groq)": ("Groq Cloud", "gemma2-9b-it"),
+}
+
+# --- OLLAMA LOCAL MODELS ---
+# This dictionary will be populated by checking the local Ollama instance.
+# Add user-friendly names for your local models here.
+OLLAMA_MODELS = {
+    "Qwen (Local)": "qwen:latest",
+    "DeepSeek (Local)": "deepseek-r1:1.5b",
+    "Qwen 0.5B (Local)": "qwen:0.5b",
+}
+
+# Convert Ollama models to the standard format for the main map
+# The provider is marked as "Ollama" to be handled by a specific logic path.
+OLLAMA_MODELS_FORMATTED = {
+    display_name: ("Ollama", model_id)
+    for display_name, model_id in OLLAMA_MODELS.items()
+}
+
+# Combine all model dictionaries into the main map for the UI
+MODEL_CHOICES_MAP = {
+    **GOOGLE_GEMINI_MODELS,
+    **TOGETHER_AI_MODELS,
+    **GROQ_CLOUD_MODELS,
+    **OLLAMA_MODELS_FORMATTED,
+}
+
+
 # === GLOBAL VARIABLES & CONSTANTS ===
 MODEL_SAVE_DIR = "saved_models"
 DATA_DIR = "data"
@@ -40,15 +84,6 @@ SPECIFIC_INPUT_CONCEPTUAL_NAMES = {
     "difficulty_dressing": "DifficultyDressingBathing", "difficulty_errands": "DifficultyErrands",
     "chest_scan": "ChestScan", "hiv_testing": "HIVTesting", "flu_vax": "FluVaxLast12",
     "pneumo_vax": "PneumoVaxEver", "high_risk_last_year": "HighRiskLastYear", "covid_pos": "CovidPos",
-}
-
-MODEL_CHOICES_MAP = {
-    "Mistral-7B (Hugging Face)": ("Hugging Face", "mistralai/Mistral-7B-Instruct-v0.1"),
-    "Gemini-Pro (Google)": ("Google Gemini", "gemini-pro"),
-    "Gemini-1.5-Flash (Google)": ("Google Gemini", "gemini-1.5-flash-latest"),
-    "Mixtral-8x7B (Together AI)": ("Together AI", "mistralai/Mixtral-8x7B-Instruct-v0.1"),
-    "Llama3-8B (Groq)": ("Groq Cloud", "llama3-8b-8192"),
-    "Gemma2-9B (Groq)": ("Groq Cloud", "gemma2-9b-it"),
 }
 
 PRESET_PROFILES = [

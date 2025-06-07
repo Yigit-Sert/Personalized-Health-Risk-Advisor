@@ -13,8 +13,10 @@ python-multipart
 xhtml2pdf
 joblib
 requests
-zipfile
 numpy
 ipykernel
 Jinja2
-tqdm 
+tqdm
+ollama
+textstat
+plotly 
