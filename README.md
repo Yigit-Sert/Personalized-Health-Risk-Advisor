@@ -1,0 +1,58 @@
+# Personalized Health Insights & LLM Advisor
+
+This is a local Gradio application for training health prediction models, generating insights, and getting AI-driven advice.
+
+## Prerequisites
+- Python 3.9+
+- A virtual environment tool (like `venv`)
+
+## Setup Instructions
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone <your-repo-url>
+    cd your_health_advisor_project
+    ```
+
+2.  **Create and Activate a Virtual Environment:**
+    ```bash
+    # For macOS/Linux
+    python3 -m venv venv
+    source venv/bin/activate
+
+    # For Windows
+    python -m venv venv
+    .\venv\Scripts\activate
+    ```
+
+3.  **Install Dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Download the Dataset:**
+    - Download the `heart_2022_no_nans.csv` file from the [Kaggle Dataset](https://www.kaggle.com/datasets/kamilpytlak/personal-key-indicators-of-heart-disease).
+    - Unzip the downloaded file. You might find the CSV inside a `2022` folder.
+    - Place the `heart_2022_no_nans.csv` file directly inside the `data/` directory.
+
+5.  **Configure API Keys:**
+    - Rename the `.env.example` file to `.env`.
+    - Open the `.env` file and replace the placeholder values with your actual API keys for Hugging Face, Google, Together AI, and Groq.
+
+## Running the Application
+
+Once the setup is complete, run the main application file from the root directory:
+
+```bash
+python -m src.app
+```
+
+The application will start, and you can access it at the local URL provided in your terminal (usually http://127.0.0.1:7860).
+
+## Project Features
+
+- **Local Model Storage**: Trained machine learning models are automatically saved to the `saved_models/` directory. On subsequent runs with the same data configuration, these models are loaded from disk, saving training time.
+
+- **Structured Code**: The project is separated into modules for UI (`app.py`), logic (`callbacks.py`), utilities (`utils.py`), and configuration (`config.py`).
+
+- **Secure API Keys**: API keys are managed via a `.env` file and are not hardcoded. 

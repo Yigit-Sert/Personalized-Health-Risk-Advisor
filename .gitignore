@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+venv/
+env/
+.venv/
+
+# Local Data/Models
+data/
+saved_models/
+temp_downloads_health_app/
+*.zip 
