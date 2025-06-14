@@ -16,7 +16,8 @@ requests
 numpy
 ipykernel
 Jinja2
-tqdm
+tqdm 
 ollama
 textstat
 plotly 
+groq 
