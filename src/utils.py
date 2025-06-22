@@ -18,11 +18,7 @@ import re
 import together
 from groq import Groq
 import ollama
-
-# Import configurations
-from .config import (
-    HUGGINGFACE_API_KEY, GOOGLE_API_KEY, TOGETHER_API_KEY, GROQ_API_KEY, MODEL_CHOICES_MAP
-)
+from config import *
 
 # Configure GenAI
 if GOOGLE_API_KEY:

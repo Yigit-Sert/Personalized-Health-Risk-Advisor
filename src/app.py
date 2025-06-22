@@ -1,7 +1,7 @@
 import gradio as gr
 import warnings
 
-from .callbacks import (
+from callbacks import (
     load_dataset_tab, clean_encode_tab, split_data_tab, update_target_viz,
     train_model_tab, update_confusion_matrix_plot, extract_rules_tab,
     setup_prediction_form_revised_fn, apply_preset_to_form_fields_revised, run_prediction_tab_form_revised,
@@ -9,7 +9,7 @@ from .callbacks import (
     evaluate_current_advice_with_llm, save_advice_and_evaluation_tab,
     current_target_disease
 )
-from .config import *
+from config import *
 
 warnings.filterwarnings("ignore")
 

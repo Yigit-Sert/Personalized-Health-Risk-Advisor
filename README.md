@@ -1,5 +1,18 @@
 # Personalized Health Insights & LLM Advisor
 
+---
+
+## 🚀 Running on Hugging Face Spaces
+
+This project is fully compatible with [Hugging Face Spaces](https://huggingface.co/spaces). To deploy:
+
+1. **Upload the entire repository to a new Space.**
+2. **Set your API keys** (for LLM features) as [Hugging Face Secrets](https://huggingface.co/docs/hub/spaces-secrets) or enter them in the UI when prompted.
+3. **No manual dataset download needed**—the app will fetch the dataset automatically.
+4. **The app will launch automatically** using the provided `app.py` entry point.
+
+---
+
 This is a local Gradio application for training health prediction models, generating insights, and getting AI-driven advice.
 
 ## Prerequisites

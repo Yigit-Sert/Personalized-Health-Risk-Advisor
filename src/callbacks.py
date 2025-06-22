@@ -17,8 +17,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
-from .config import *
-from .utils import *
+from config import *
+from utils import *
 
 warnings.filterwarnings("ignore")
 
